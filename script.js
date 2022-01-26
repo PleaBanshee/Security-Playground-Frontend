@@ -5,24 +5,24 @@
 // are run at the time the original page is parsed). On the
 // other hand, images injected into the DOM are loaded at that
 // time, and if the loading fails, then the onerror event
-//handler is called.
+// handler is called.
 const userInputInHTML = (input) => {
   const p = document.getElementById("pleaseNo")
-  // Bad --- SQL injection can occur here
-  p.innerHTML = input;
+  // Bad --- SQL injection can occur here, as commands can still be injected and not converted to plaintext
+  // p.innerHTML = input;
 
-  // Better
-  // var textnode = document.createTextNode(input);
-  // p.appendChild(textnode);
+  // Better --- createTextNode() converts the input to pure text, so commands can't be executed
+  var textnode = document.createTextNode(input);
+  p.appendChild(textnode);
 }
 const sendToServer = () => {
   const input = document.querySelector('#userinput').value;
   userInputInHTML(input)
   fetch('http://localhost:3000/secret', {
-    method: 'POST',
-    body: JSON.stringify({userInput: input}),
     headers: new Headers({
       'Content-Type': 'application/json'
-    })
+    }),
+    method: 'POST',
+    body: JSON.stringify({userInput: input})
   })
 }
